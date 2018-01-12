@@ -1,0 +1,7 @@
+- Implement as compiled binary
+- Support `--all` for getting the versions of `which -a`
+- Command to make PRs easy
+- Test suite driven by examples in text files (`<cmd>_01.txt`)
+- Structured major/minor/patch output
+- Capture other version details
+- Simply call version command for program (saves users having to remember `-version`/`--version`/`-v`/etc.)
