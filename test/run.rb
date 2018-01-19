@@ -11,6 +11,8 @@ counts = {
   :fail => 0,
 }
 
+failures = []
+
 examples.each do |exs|
   tests = YAML.load_file(exs)
   test_name = File.basename(exs)
@@ -36,12 +38,28 @@ examples.each do |exs|
       counts[:pass] += 1
     else
       puts "fail #{example_name} #{expected_output}"
+      failures << {
+        :example_name => example_name,
+        :expected_output => expected_output,
+        :actual_output => actual_output,
+        :input => input
+      }
       counts[:fail] += 1
     end
   end
 end
 
 total = counts[:pass] + counts[:fail]
+
+unless failures.empty?
+  puts ""
+  puts "FAILURES"
+  failures.each do |f|
+    puts f[:example_name]
+    puts "  >>> expected #{f[:expected_output]}, got #{f[:actual_output]}"
+    puts f[:input].gsub(/^/, '  >>> ')
+  end
+end
 
 puts ""
 puts "#{examples.size} files, #{total} tests, #{counts[:pass]} pass, #{counts[:fail]} failed"
