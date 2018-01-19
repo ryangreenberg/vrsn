@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-load File.expand_path('../../bin/vrsn', __FILE__)
+require_relative('../lib/vrsn')
 require 'yaml'
 
 example_dir = File.expand_path('../examples', __FILE__)
@@ -18,7 +18,7 @@ examples.each do |exs|
   test_name = File.basename(exs)
 
   cmd = File.basename(exs, '.*')
-  config = COMMANDS_BY_NAME[cmd]
+  config = Vrsn::COMMANDS_BY_NAME[cmd]
 
   tests.each.with_index do |ex, idx|
     input = ex['input']
@@ -31,7 +31,7 @@ examples.each do |exs|
       next
     end
 
-    actual_output = extract(config, input)
+    actual_output = Vrsn.extract(config, input)
 
     if actual_output == expected_output
       puts "pass #{example_name} #{expected_output}"
