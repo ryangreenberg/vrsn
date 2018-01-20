@@ -1,3 +1,5 @@
+require 'optparse'
+
 module Vrsn
   DDVERSION = '--version'
   SDVERSION = '-version'
@@ -11,33 +13,60 @@ module Vrsn
     m ? m[1] : m
   end
 
+  def self.by_name(cmds)
+    Hash[cmds.map {|c| [ c[:name], c ] }]
+  end
+
   COMMANDS = [
     cmd('java', SDVERSION, /java version "(.+?)"/),
     cmd('thrift', SDVERSION, /Thrift version (.+?)$/i),
   ]
 
-  COMMANDS_BY_NAME = Hash[COMMANDS.map {|c| [ c[:name], c ] }]
+  COMMANDS_BY_NAME = by_name(COMMANDS)
 
   class CLI
     USAGE = 'vrsn <command>'
 
-    def initialize(args)
+    def initialize(args, commands_by_name = COMMANDS_BY_NAME)
       @args = args
+      @commands_by_name = commands_by_name
     end
 
     def main
-      cmd = @args.last
-      abort USAGE unless cmd
+      options = parsed_args
+      cmds = options[:remaining]
+      abort USAGE if cmds.empty?
 
-      config = COMMANDS_BY_NAME[cmd]
-      abort "Unsupported command '#{cmd}'" unless config
+      output_format = cmds.length == 1 ? "%v" : "%c\t%v"
 
-      version_cmd = "#{cmd} #{config[:flag]} 2>&1"
-      output = `#{version_cmd}`
-      m = Vrsn.extract(config, output)
+      cmds.each do |cmd|
+        config = @commands_by_name[cmd]
+        abort "Unsupported command '#{cmd}'" unless config
 
-      abort "Unable to parse output of #{version_cmd}:\n#{output}" unless m
-      puts m
+        version_cmd = "#{cmd} #{config[:flag]} 2>&1"
+        output = `#{version_cmd}`
+        m = Vrsn.extract(config, output)
+
+        abort "Unable to parse output of #{version_cmd}:\n#{output}" unless m
+        puts format(output_format, { :version => m, :command => cmd })
+      end
+    end
+
+    def format(str, options)
+      str.
+        gsub(/%v\b/, options[:version]).
+        gsub(/%c\b/, options[:command])
+    end
+
+    def parsed_args
+      options = {}
+
+      parser = OptionParser.new do |opts|
+      end
+
+      options[:remaining] = parser.parse(@args)
+
+      options
     end
   end
 end
