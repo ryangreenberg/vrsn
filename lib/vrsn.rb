@@ -39,11 +39,19 @@ module Vrsn
 
       output_format = cmds.length == 1 ? "%v" : "%c\t%v"
 
-      cmds.each do |cmd|
+      cmds.each.with_index do |cmd, idx|
         config = @commands_by_name[cmd]
         abort "Unsupported command '#{cmd}'" unless config
 
         version_cmd = "#{cmd} #{config[:flag]} 2>&1"
+        if options[:raw]
+          puts cmd if cmds.length > 1
+          system(version_cmd)
+          puts if cmds.length > 1 && cmds.length - 1 != idx
+
+          next
+        end
+
         output = `#{version_cmd}`
         m = Vrsn.extract(config, output)
 
@@ -59,9 +67,14 @@ module Vrsn
     end
 
     def parsed_args
-      options = {}
+      options = {
+        :raw => false
+      }
 
       parser = OptionParser.new do |opts|
+        opts.on('-r', '--raw', 'Run the command and show its version output verbatim.') do
+          options[:raw] = true
+        end
       end
 
       options[:remaining] = parser.parse(@args)
