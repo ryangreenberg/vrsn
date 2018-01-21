@@ -39,9 +39,14 @@ module Vrsn
 
       output_format = cmds.length == 1 ? "%v" : "%c\t%v"
 
+      if options[:all]
+        cmds = cmds.flat_map { |cmd| `which -a #{cmd}`.split("\n").map(&:strip) }
+      end
+
       cmds.each.with_index do |cmd, idx|
-        config = @commands_by_name[cmd]
-        abort "Unsupported command '#{cmd}'" unless config
+        cmd_name = File.basename(cmd)
+        config = @commands_by_name[cmd_name]
+        abort "Unsupported command '#{cmd_name}'" unless config
 
         version_cmd = "#{cmd} #{config[:flag]} 2>&1"
         if options[:raw]
@@ -68,10 +73,15 @@ module Vrsn
 
     def parsed_args
       options = {
-        :raw => false
+        :all => false,
+        :raw => false,
       }
 
       parser = OptionParser.new do |opts|
+        opts.on('-a', '--all', 'Show the version of all matching commands in the current $PATH.') do
+          options[:all] = true
+        end
+
         opts.on('-r', '--raw', 'Run the command and show its version output verbatim.') do
           options[:raw] = true
         end
