@@ -19,12 +19,12 @@ flag = ARGV[1] || ask("Version flag")
 expected = ARGV[2] || :ask_later
 
 abort USAGE unless cmd && flag
-abort "Commands must be on the top-level of the user's PATH (they cannot contain '/')" if cmd.include?('/')
 
 # Could check that exit status is 0, but there may be some
 # oddball commands that exit non-zero
 cmd_with_flag = "#{cmd} #{flag}"
 output = `#{cmd_with_flag} 2>&1`.strip
+cmd_name = File.basename(cmd)
 
 puts "Run:"
 puts "  #{cmd_with_flag}"
@@ -39,7 +39,7 @@ puts "  #{expected}"
 puts
 
 # Added example ## to file
-example_file = "#{cmd}.yml"
+example_file = "#{cmd_name}.yml"
 example_path = File.expand_path("../examples/#{example_file}", __FILE__)
 
 examples = if File.exist?(example_path)
