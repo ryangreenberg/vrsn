@@ -51,6 +51,33 @@ $ vrsn convert
 
 ## Installation
 
+```
+git clone
+ln -s bin/vrsn /usr/local/bin
+```
+
 ## Usage
 
+See also `vrsn --help` for documentation.
+
+```
+vrsn [options] <commands>
+
+-r, --raw
+
+Runs the provided command and presents its version output verbatim. Handy for when you don't care to remember the version flag for a command or when running with multiple commands
+```
+
 ## Development
+
+### Run tests
+
+```
+test/run.rb
+```
+
+### Support a new command
+
+To add a new command, run `test/generate.rb`. It will prompt you interactively for the command, version flag, and version that it should extract. This will add a test case to the appropriate file in the `test/examples` directory and output a stub implementation to add to `lib/vrsn`.
+
+You can also use it non-interactively with `test/generate.rb <cmd> <flag> <expected version>`
