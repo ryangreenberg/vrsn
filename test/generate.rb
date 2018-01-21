@@ -80,4 +80,5 @@ when '--version' then 'DDVERSION'
 when '-version' then 'SDVERSION'
 else "'#{flag}'"
 end
-puts %|  cmd('#{cmd}', #{impl_flag}, match_stdout(/^(.+?)$/))|
+impl_match = stdout.empty? ? 'match_stderr' : 'match_stdout'
+puts %|  cmd('#{cmd}', #{impl_flag}, #{impl_match}(/^(.+?)$/)),|
