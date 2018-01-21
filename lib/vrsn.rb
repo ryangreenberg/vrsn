@@ -30,6 +30,7 @@ module Vrsn
     cmd('java', SDVERSION, match_stderr(/java version "(.+?)[_"]/)),
     cmd('node', DDVERSION, match_stdout(/^v(.+?)$/)),
     cmd('npm', DDVERSION, match_stdout(/^(.+?)$/)),
+    cmd('php', DDVERSION, match_stdout(/^PHP (.+?) /)),
     cmd('python', DDVERSION, match_stderr(/^Python (.+?)$/)),
     cmd('ruby', DDVERSION, match_stdout(/^ruby (.+?)p/)),
     cmd('scala', SDVERSION, match_stderr(/version (.+?) --/)),
