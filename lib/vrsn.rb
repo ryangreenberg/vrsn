@@ -29,6 +29,7 @@ module Vrsn
     cmd('git', DDVERSION, match_stdout(/^git version ([.0-9]+)\b/)),
     cmd('java', SDVERSION, match_stderr(/java version "(.+?)"/)),
     cmd('npm', DDVERSION, match_stdout(/^(.+?)$/)),
+    cmd('python', DDVERSION, match_stderr(/^Python (.+?)$/)),
     cmd('scala', SDVERSION, match_stderr(/version (.+?) --/)),
     cmd('thrift', SDVERSION, match_stdout(/Thrift version (.+?)$/i)),
   ]
