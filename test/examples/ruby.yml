@@ -1,0 +1,10 @@
+---
+-   stdout: ruby 2.4.1p111 (2017-03-22 revision 58053) [x86_64-darwin16]
+    stderr: ''
+    version: 2.4.1
+-   stdout: ruby 2.5.0p0 (2017-12-25 revision 61468) [x86_64-darwin16]
+    stderr: ''
+    version: 2.5.0
+-   stdout: ruby 1.9.3p545 (2014-02-24 revision 45159) [x86_64-darwin13.1.0]
+    stderr: ''
+    version: 1.9.3

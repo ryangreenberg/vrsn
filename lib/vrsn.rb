@@ -30,6 +30,7 @@ module Vrsn
     cmd('java', SDVERSION, match_stderr(/java version "(.+?)"/)),
     cmd('npm', DDVERSION, match_stdout(/^(.+?)$/)),
     cmd('python', DDVERSION, match_stderr(/^Python (.+?)$/)),
+    cmd('ruby', DDVERSION, match_stdout(/^ruby (.+?)p/)),
     cmd('scala', SDVERSION, match_stderr(/version (.+?) --/)),
     cmd('thrift', SDVERSION, match_stdout(/Thrift version (.+?)$/i)),
   ]
