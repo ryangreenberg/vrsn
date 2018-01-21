@@ -1,0 +1,6 @@
+---
+-   stdout: |-
+        Homebrew 1.4.3
+        Homebrew/homebrew-core (git revision eae0b; last commit 2018-01-10)
+    stderr: ''
+    version: 1.4.3
