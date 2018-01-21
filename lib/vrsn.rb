@@ -1,3 +1,4 @@
+require 'open3'
 require 'optparse'
 
 module Vrsn
@@ -8,9 +9,16 @@ module Vrsn
     { :name => name, :flag => flag, :extract => extract }
   end
 
-  def self.extract(config, output)
-    m = output.match(config[:extract])
-    m ? m[1] : m
+  def self.match_stdout(pattern)
+    lambda {|stdout, _| m = stdout.match(pattern); m ? m[1] : m }
+  end
+
+  def self.match_stderr(pattern)
+    lambda {|_, stderr| m = stderr.match(pattern); m ? m[1] : m }
+  end
+
+  def self.extract(config, stdout, stderr)
+    config[:extract].call(stdout, stderr)
   end
 
   def self.by_name(cmds)
@@ -18,9 +26,9 @@ module Vrsn
   end
 
   COMMANDS = [
-    cmd('git', DDVERSION, /^git version ([.0-9]+)\b/),
-    cmd('java', SDVERSION, /java version "(.+?)"/),
-    cmd('thrift', SDVERSION, /Thrift version (.+?)$/i),
+    cmd('git', DDVERSION, match_stdout(/^git version ([.0-9]+)\b/)),
+    cmd('java', SDVERSION, match_stderr(/java version "(.+?)"/)),
+    cmd('thrift', SDVERSION, match_stdout(/Thrift version (.+?)$/i)),
   ]
 
   COMMANDS_BY_NAME = by_name(COMMANDS)
@@ -49,19 +57,21 @@ module Vrsn
         config = @commands_by_name[cmd_name]
         abort "Unsupported command '#{cmd_name}'" unless config
 
-        version_cmd = "#{cmd} #{config[:flag]} 2>&1"
+        version_cmd = "#{cmd} #{config[:flag]}"
         if options[:raw]
           puts cmd if cmds.length > 1
-          system(version_cmd)
+          # Ensure that all version output consistently goes to stdout
+          system("#{version_cmd} 2>&1")
           puts if cmds.length > 1 && cmds.length - 1 != idx
 
           next
         end
 
-        output = `#{version_cmd}`
-        m = Vrsn.extract(config, output)
+        # output = `#{version_cmd}`
+        stdout, stderr, status = Open3.capture3(cmd, config[:flag])
+        m = Vrsn.extract(config, stdout, stderr)
 
-        abort "Unable to parse output of #{version_cmd}:\n#{output}" unless m
+        abort "Unable to parse output of #{version_cmd}:\n#{stdout}\n\n#{stderr}" unless m
         puts format(output_format, { :version => m, :command => cmd })
       end
     end

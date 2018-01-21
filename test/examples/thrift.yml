@@ -1,6 +1,4 @@
 ---
--
-    input: |
-        Thrift version 0.9.3
-
-    output: "0.9.3"
+-   stdout: Thrift version 0.9.1
+    stderr: ''
+    version: 0.9.1

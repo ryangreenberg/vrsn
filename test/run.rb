@@ -21,8 +21,8 @@ examples.each do |exs|
   config = Vrsn::COMMANDS_BY_NAME[cmd]
 
   tests.each.with_index do |ex, idx|
-    input = ex['input']
-    expected_output = ex['output']
+    stdout, stderr = ex['stdout'], ex['stderr']
+    expected_version = ex['version']
     example_name = "#{test_name}[#{idx}]"
 
     unless config
@@ -31,18 +31,19 @@ examples.each do |exs|
       next
     end
 
-    actual_output = Vrsn.extract(config, input)
+    actual_version = Vrsn.extract(config, stdout, stderr)
 
-    if actual_output == expected_output
-      puts "pass #{example_name} #{expected_output}"
+    if actual_version == expected_version
+      puts "pass #{example_name} #{expected_version}"
       counts[:pass] += 1
     else
-      puts "fail #{example_name} #{expected_output}"
+      puts "fail #{example_name} #{expected_version}"
       failures << {
         :example_name => example_name,
-        :expected_output => expected_output,
-        :actual_output => actual_output,
-        :input => input
+        :expected_version => expected_version,
+        :actual_version => actual_version,
+        :stdout => stdout,
+        :stderr => stderr,
       }
       counts[:fail] += 1
     end
@@ -56,8 +57,12 @@ unless failures.empty?
   puts "FAILURES"
   failures.each do |f|
     puts f[:example_name]
-    puts "  >>> expected #{f[:expected_output]}, got #{f[:actual_output]}"
-    puts f[:input].gsub(/^/, '  >>> ')
+    puts "  >>> expected #{f[:expected_version]}, got #{f[:actual_version].inspect}"
+    puts '  >>> stdout'
+    puts (f[:stdout].empty? ? '  >>> (empty)' : f[:stdout].gsub(/^/, '  >>> ') )
+    puts '  >>> '
+    puts '  >>> stderr'
+    puts (f[:stderr].empty? ? '  >>> (empty)' : f[:stderr].gsub(/^/, '  >>> ') )
   end
 end
 

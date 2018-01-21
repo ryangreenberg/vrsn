@@ -1,8 +1,13 @@
 ---
-- 
-    input: |
+-   stdout: ''
+    stderr: |-
         java version "9.0.1"
         Java(TM) SE Runtime Environment (build 9.0.1+11)
         Java HotSpot(TM) 64-Bit Server VM (build 9.0.1+11, mixed mode)
-
-    output: "9.0.1"
+    version: 9.0.1
+-   stdout: ''
+    stderr: |-
+        java version "1.7.0_51"
+        Java(TM) SE Runtime Environment (build 1.7.0_51-b13)
+        Java HotSpot(TM) 64-Bit Server VM (build 24.51-b03, mixed mode)
+    version: 1.7.0_51
