@@ -51,11 +51,11 @@ module Vrsn
       cmds = options[:remaining]
       abort USAGE if cmds.empty?
 
-      output_format = cmds.length == 1 ? "%v" : "%c\t%v"
-
       if options[:all]
         cmds = cmds.flat_map { |cmd| `which -a #{cmd}`.split("\n").map(&:strip) }
       end
+
+      output_format = cmds.length == 1 ? "%v" : "%c\t%v"
 
       cmds.each.with_index do |cmd, idx|
         cmd_name = File.basename(cmd)
