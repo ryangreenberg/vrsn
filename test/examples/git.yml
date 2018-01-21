@@ -1,0 +1,5 @@
+---
+-   input: git version 2.2.2
+    output: 2.2.2
+-   input: git version 2.8.4 (Apple Git-73)
+    output: 2.8.4

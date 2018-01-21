@@ -18,6 +18,7 @@ module Vrsn
   end
 
   COMMANDS = [
+    cmd('git', DDVERSION, /^git version ([.0-9]+)\b/),
     cmd('java', SDVERSION, /java version "(.+?)"/),
     cmd('thrift', SDVERSION, /Thrift version (.+?)$/i),
   ]
