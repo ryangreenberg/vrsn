@@ -6,6 +6,8 @@ require 'yaml'
 example_dir = File.expand_path('../examples', __FILE__)
 examples = Dir.glob(File.join(example_dir, '*.yml'))
 
+start = Time.now
+
 counts = {
   :pass => 0,
   :fail => 0,
@@ -66,7 +68,9 @@ unless failures.empty?
   end
 end
 
+duration = Time.now - start
+
 puts ""
-puts "#{examples.size} files, #{total} tests, #{counts[:pass]} pass, #{counts[:fail]} failed"
+puts "#{examples.size} files, #{total} tests, #{counts[:pass]} pass, #{counts[:fail]} failed in #{duration} secs"
 
 exit (counts[:fail] != 0 ? 1 : 0)
