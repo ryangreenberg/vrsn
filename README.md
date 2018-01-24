@@ -1,5 +1,5 @@
 # vrsn
-Get the version of software tools
+Get the version of software tools.
 
 Versions are one of the 17 terrible things about computers. `vrsn` makes the problem a tiny bit better.
 
@@ -16,8 +16,8 @@ java version "9.0.1"
 Java(TM) SE Runtime Environment (build 9.0.1+11)
 Java HotSpot(TM) 64-Bit Server VM (build 9.0.1+11, mixed mode)
 
-$ python -V
-Python 2.7.10
+$ go version
+go version go1.9.3 darwin/amd64
 
 $ node --version
 v8.9.4
@@ -33,27 +33,27 @@ Delegates (built-in): bzlib freetype jng jpeg ltdl lzma png tiff xml zlib
 **After**
 
 ```
+# One command
 $ vrsn ruby
 2.4.3
 
 $ vrsn java
 9.0.1
 
-$ vrsn python
-2.7.10
-
-$ vrsn node
-8.9.4
-
-$ vrsn convert
-7.0.7
+# Multiple commands
+$ vrsn ruby java go node convert
+ruby    2.4.1
+java    9.0.1
+go      1.9.3
+node    8.9.3
+convert 7.0.7
 ```
 
 ## Installation
 
 ```
 git clone
-ln -s bin/vrsn /usr/local/bin
+make install
 ```
 
 ## Usage
