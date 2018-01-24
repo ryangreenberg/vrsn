@@ -1,0 +1,7 @@
+---
+-   stdout: "Version: ImageMagick 7.0.7-21 Q16 x86_64 2018-01-08 http://www.imagemagick.org\nCopyright:
+        © 1999-2018 ImageMagick Studio LLC\nLicense: http://www.imagemagick.org/script/license.php\nFeatures:
+        Cipher DPC HDRI Modules \nDelegates (built-in): bzlib freetype jng jpeg ltdl
+        lzma png tiff xml zlib"
+    stderr: ''
+    version: 7.0.7
