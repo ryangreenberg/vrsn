@@ -1,0 +1,4 @@
+---
+-   stdout: go version go1.5.3 darwin/amd64
+    stderr: ''
+    version: 1.5.3

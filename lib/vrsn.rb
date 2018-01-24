@@ -28,6 +28,7 @@ module Vrsn
   COMMANDS = [
     cmd('brew', DDVERSION, match_stdout(/^Homebrew (.+?)$/)),
     cmd('git', DDVERSION, match_stdout(/^git version ([.0-9]+)\b/)),
+    cmd('go', 'version', match_stdout(/go([.0-9]+) /)),
     cmd('java', SDVERSION, match_stderr(/java version "(.+?)[_"]/)),
     cmd('node', DDVERSION, match_stdout(/^v(.+?)$/)),
     cmd('npm', DDVERSION, match_stdout(/^(.+?)$/)),
