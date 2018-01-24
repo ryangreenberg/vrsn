@@ -78,6 +78,8 @@ test/run.rb
 
 ### Support a new command
 
-To add a new command, run `test/generate.rb`. It will prompt you interactively for the command, version flag, and version that it should extract. This will add a test case to the appropriate file in the `test/examples` directory and output a stub implementation to add to `lib/vrsn`.
+To add a new command, run `bin/generate`. It will prompt you interactively for the command, version flag, and version that it should extract. This will add a test case to the appropriate file in the `test/examples` directory and output a stub implementation to add to `lib/vrsn`.
 
 You can also use it non-interactively with `test/generate.rb <cmd> <flag> <expected version>`
+
+Commit your test and change together with the message "Support command `<name of command>`" and make a pull request.
